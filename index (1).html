@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>مساعد المشاريع والتحول الرقمي</title>
+  <style>
+    :root {
+      --sbc-dark: #1E2A78;
+      --sbc-purple: #9B2FAE;
+      --sbc-blue: #007BCE;
+      --bg-soft: #f4f6fa;
+      --user-bubble: #E8EDFF;
+      --bot-bubble: #ffffff;
+      --border-soft: #dcdcdc;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0;
+      background: var(--bg-soft);
+      font-family: "Tajawal", sans-serif;
+      color: #222;
+    }
+    .top-bar {
+      background: linear-gradient(90deg, var(--sbc-dark), var(--sbc-purple), var(--sbc-blue));
+      color: #fff; padding: 18px 16px; text-align: center;
+      font-size: 22px; font-weight: 600;
+    }
+    .chat-wrapper { max-width: 960px; margin: 24px auto; padding: 0 12px; }
+    .chat-card {
+      background: #fff; border-radius: 18px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+      display: flex; flex-direction: column;
+      height: min(70vh, 600px); min-height: 420px; overflow: hidden;
+    }
+    .chat-body {
+      flex: 1; padding: 16px 14px 8px; overflow-y: auto;
+      background: radial-gradient(circle at top, #f7f8ff 0, #ffffff 40%, #f7f8ff 100%);
+    }
+    .msg-row { display: flex; margin-bottom: 10px; }
+    .msg-row.user { justify-content: flex-end; }
+    .msg-row.bot { justify-content: flex-start; }
+    .msg-bubble {
+      max-width: 76%; padding: 10px 14px; border-radius: 15px;
+      font-size: 15px; white-space: pre-wrap; line-height: 1.6;
+    }
+    .msg-bubble.user {
+      background: var(--user-bubble); border: 1px solid #d4dcff;
+      border-bottom-right-radius: 4px;
+    }
+    .msg-bubble.bot {
+      background: var(--bot-bubble); border: 1px solid var(--border-soft);
+      border-bottom-left-radius: 4px;
+    }
+    .typing-indicator {
+      display: none; font-size: 13px; color: #777; padding: 0 14px 6px;
+      display: flex; gap: 6px; align-items: center;
+    }
+    .typing-dots span {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: #b6baff; animation: bounce 1s infinite; display: inline-block;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce {
+      0%,80%,100% { transform: translateY(0); opacity:0.4; }
+      40% { transform: translateY(-3px); opacity:1; }
+    }
+    .chat-footer {
+      border-top: 1px solid #ececec; padding: 10px; background: #fafbff;
+      display: flex; gap: 10px;
+    }
+    .chat-footer input {
+      flex: 1; padding: 12px; border-radius: 12px;
+      border: 1px solid #c9c9c9; font-size: 15px; outline: none;
+    }
+    .chat-footer button {
+      padding: 12px 18px; border-radius: 12px; border: none;
+      background: linear-gradient(135deg, var(--sbc-dark), var(--sbc-blue));
+      color: #fff; cursor: pointer; font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">مساعد المشاريع والتحول الرقمي</div>
+  <div class="chat-wrapper">
+    <div class="chat-card">
+      <div id="chatBody" class="chat-body">
+        <div class="msg-row bot">
+          <div class="msg-bubble bot">
+            مرحباً بك في مساعد المشاريع والتحول الرقمي 👋✨
+          </div>
+        </div>
+      </div>
+      <div id="typingRow" class="typing-indicator">
+        <span>المساعد يكتب</span>
+        <div class="typing-dots"><span></span><span></span><span></span></div>
+      </div>
+      <div class="chat-footer">
+        <input id="userInput" type="text" placeholder="اكتبي سؤالك هنا..." onkeydown="handleKey(event)">
+        <button onclick="sendMessage()">إرسال</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const chatBody = document.getElementById("chatBody");
+  const typingRow = document.getElementById("typingRow");
+  const userInput = document.getElementById("userInput");
+
+  function appendMessage(text, sender="user") {
+    const row = document.createElement("div");
+    row.className = "msg-row " + sender;
+    const bubble = document.createElement("div");
+    bubble.className = "msg-bubble " + sender;
+    bubble.textContent = text;
+    row.appendChild(bubble);
+    chatBody.appendChild(row);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
+
+  function handleKey(e) {
+    if (e.key === "Enter") { e.preventDefault(); sendMessage(); }
+  }
+
+  async function sendMessage() {
+    const text = userInput.value.trim();
+    if (!text) return;
+    appendMessage(text, "user");
+    userInput.value = "";
+    typingRow.style.display = "flex";
+
+    setTimeout(() => {
+      typingRow.style.display = "none";
+      appendMessage("هذا رد تجريبي. سيتم ربطه بـ n8n قريباً.", "bot");
+    }, 900);
+  }
+</script>
+
+</body>
+</html>
