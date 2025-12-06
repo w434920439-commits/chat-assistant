@@ -170,16 +170,25 @@
     typingRow.style.display = "block";
 
     try {
-      const response = await fetch("https://wejdan191.app.n8n.cloud/webhook/c02b0394-6a93-47cd-ac1c-3cfed84b370e", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text })
-      });
+      const response = await fetch(
+        "https://wejdan191.app.n8n.cloud/webhook/c02b0394-6a93-47cd-ac1c-3cfed84b370e",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text })
+        }
+      );
 
       const data = await response.json();
       typingRow.style.display = "none";
 
-      appendMessage(data.answer || "📌 لم يصلني رد من n8n", "bot");
+      // قراءة الرد بشكل آمن
+      const reply =
+        data.answer ||
+        (Array.isArray(data) && data[0]?.answer) ||
+        "📌 لم يصلني رد من n8n";
+
+      appendMessage(reply, "bot");
 
     } catch (err) {
       typingRow.style.display = "none";
@@ -190,5 +199,4 @@
 
 </body>
 </html>
-
 
