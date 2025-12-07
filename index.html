@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>مساعد المشاريع والتحول الرقمي</title>
 
-  <!-- ⭐ إضافة مكتبة Markdown -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
   <style>
     :root {
       --sbc-dark: #1E2A78;
@@ -147,7 +144,6 @@
   const typingRow = document.getElementById("typingRow");
   const userInput = document.getElementById("userInput");
 
-  /* ⭐ تعديل دالة appendMessage فقط */
   function appendMessage(text, sender = "user") {
     const row = document.createElement("div");
     row.className = "msg-row " + sender;
@@ -155,8 +151,8 @@
     const bubble = document.createElement("div");
     bubble.className = "msg-bubble " + sender;
 
-    // ⭐ دعم Markdown ومعالجة التنسيق
-    bubble.innerHTML = marked.parse(text);
+    // 🔥 التعديل هنا فقط — تغيير textContent إلى innerHTML
+    bubble.innerHTML = text;
 
     row.appendChild(bubble);
     chatBody.appendChild(row);
@@ -192,7 +188,9 @@
       const reply = data.answer || "📌 الرد لا يحتوي على answer";
 
       typingRow.style.display = "none";
-      appendMessage(reply, "bot");
+
+      // 🔥 تحويل السطور إلى <br> لإظهار التنسيق
+      appendMessage(reply.replace(/\n/g, "<br>"), "bot");
 
     } catch (err) {
       typingRow.style.display = "none";
@@ -200,6 +198,7 @@
     }
   }
 </script>
+
 
 </body>
 </html>
