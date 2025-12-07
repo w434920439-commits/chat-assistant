@@ -184,7 +184,8 @@
     const data = await response.json();
 
     // 🔥 هــنــا حذفنا RAW بالكامل
-    const reply = data.answer || "📌 الرد لا يحتوي على answer";
+    const reply = data.answer || (data[0] && data[0].answer) || "📌 الرد لا يحتوي على answer";
+
 
     typingRow.style.display = "none";
 
@@ -202,6 +203,7 @@
 
 </body>
 </html>
+
 
 
 
