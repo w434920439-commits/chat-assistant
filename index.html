@@ -182,9 +182,12 @@
     }
   }
 
-  async function sendMessage() {
-    const text = userInput.value.trim();
-    if (!text) return;
+ async function sendMessage() {
+  appendMessage("🔍 Debug: sendMessage started", "bot");
+
+  const text = userInput.value.trim();
+  if (!text) return;
+
 
     appendMessage(text, "user");
     userInput.value = "";
@@ -222,4 +225,5 @@
 
 </body>
 </html>
+
 
