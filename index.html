@@ -189,7 +189,8 @@
     typingRow.style.display = "none";
 
     // 🔥 يسمح للنص يظهر منسّق + أسطر
-    appendMessage(reply, "bot");
+    appendMessage(reply.replace(/\n/g, "<br>"), "bot");
+
 
   } catch (err) {
     typingRow.style.display = "none";
@@ -202,5 +203,6 @@
 
 </body>
 </html>
+
 
 
