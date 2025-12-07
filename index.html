@@ -201,6 +201,8 @@
       );
 
       const raw = await response.text();
+      appendMessage("RAW: " + raw, "bot");
+
 
       let data;
       try { data = JSON.parse(raw); }
@@ -220,3 +222,4 @@
 
 </body>
 </html>
+
