@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>مساعد المشاريع والتحول الرقمي</title>
 
-  <!-- تحويل Markdown إلى HTML -->
+  <!-- ⭐ إضافة مكتبة Markdown -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <style>
@@ -147,7 +147,7 @@
   const typingRow = document.getElementById("typingRow");
   const userInput = document.getElementById("userInput");
 
-  // ⭐ تعديل مهم — الآن يدعم Markdown ويظهر الرد منسّق
+  /* ⭐ تعديل دالة appendMessage فقط */
   function appendMessage(text, sender = "user") {
     const row = document.createElement("div");
     row.className = "msg-row " + sender;
@@ -155,7 +155,7 @@
     const bubble = document.createElement("div");
     bubble.className = "msg-bubble " + sender;
 
-    // تحويل Markdown إلى HTML
+    // ⭐ دعم Markdown ومعالجة التنسيق
     bubble.innerHTML = marked.parse(text);
 
     row.appendChild(bubble);
@@ -185,19 +185,13 @@
         }
       );
 
-      const raw = await response.text();
+      const data = await response.json();
 
-      let data;
-      try { data = JSON.parse(raw); }
-      catch { data = raw; }
+      appendMessage("RAW: " + JSON.stringify(data), "bot");
 
-      const reply =
-        data.answer ||
-        (Array.isArray(data) && data[0]?.answer) ||
-        "📌 لم يصلني رد من n8n";
+      const reply = data.answer || "📌 الرد لا يحتوي على answer";
 
       typingRow.style.display = "none";
-
       appendMessage(reply, "bot");
 
     } catch (err) {
