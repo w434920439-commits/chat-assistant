@@ -161,33 +161,9 @@
     if (e.key === "Enter") sendMessage();
   }
 
-  // دالة ذكية للتعامل مع كل أنواع الردود من n8n
-  function extractReply(data) {
-    try {
-      if (data && typeof data === "object" && data.answer) return data.answer;
-      if (Array.isArray(data) && data[0]?.answer) return data[0].answer;
-
-      if (typeof data === "string") {
-        try {
-          const parsed = JSON.parse(data);
-          return parsed.answer || parsed[0]?.answer || data;
-        } catch {
-          return data;
-        }
-      }
-
-      return "📌 لم يصلني رد من n8n";
-    } catch {
-      return "📌 خطأ أثناء قراءة رد n8n";
-    }
-  }
-
- async function sendMessage() {
-  appendMessage("🔍 Debug: sendMessage started", "bot");
-
-  const text = userInput.value.trim();
-  if (!text) return;
-
+  async function sendMessage() {
+    const text = userInput.value.trim();
+    if (!text) return;
 
     appendMessage(text, "user");
     userInput.value = "";
@@ -203,15 +179,14 @@
         }
       );
 
-      const raw = await response.text();
-      appendMessage("RAW: " + raw, "bot");
+      // استلام JSON مباشرة من n8n
+      const data = await response.json();
 
+      // Debug — يُظهر الرد الخام
+      appendMessage("RAW: " + JSON.stringify(data), "bot");
 
-      let data;
-      try { data = JSON.parse(raw); }
-      catch { data = raw; }
-
-      const reply = extractReply(data);
+      // استخراج الرد
+      const reply = data.answer || "📌 الرد لا يحتوي على answer";
 
       typingRow.style.display = "none";
       appendMessage(reply, "bot");
@@ -225,5 +200,3 @@
 
 </body>
 </html>
-
-
